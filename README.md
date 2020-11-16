@@ -46,6 +46,10 @@ You can implement your own implementation in either of these classes:
 * [Scala](src/main/scala/com/ing/sea/pdeng/graph/search/EfficientSearchStrategyScala.scala)
 * [Java](src/main/java/com/ing/sea/pdeng/graph/search/EfficientSearchStrategyJava.java)
 
+Note that [HyperEdgeInfo](src/main/scala/com/ing/sea/pdeng/graph/search/HyperEdgeInfo.scala) is a convenience wrapper around a plain `WDiHyperEdge`, which is a plain edge and part of the expected result of the algorithm. 
+You can use this `HyperEdgeInfo` class to easily query an edge for it's _out_ (i.e. producing `Type`), _f_ (`Callable Unit`) or _in_ (the argument `Type` for this callable unit). 
+The original Edge is also contained, so it can just be extracted if you need it. 
+
 ## Evaluating your implementation
 After doing so, you can run all tests against your implementation by enabling the testsuite in the following class:
 * [Small test suite](src/test/scala/com/ing/sea/pdeng/graph/search/TypeGraphSearchSpec.scala)
@@ -53,7 +57,9 @@ After doing so, you can run all tests against your implementation by enabling th
 
 ## Examples
 You can look at the small testcases for a number of examples: [SearchTestCases](src/test/scala/com/ing/sea/pdeng/graph/search/testcases/SearchTestCases.scala).
-This can be useful to figure out what is expected behaviour in specific situations. 
+This can be useful to figure out what is expected behaviour in specific situations.
+As for a _very_ naive algorithm, an indication of how things should work from a functional perspective can be found in [NaiveTailRec](src/test/scala/com/ing/sea/pdeng/graph/search/testcases/NaiveTailRec.scala). 
+You can use this as a reference implementation, although it's obviously extremely inefficient and slow. 
 
 When there are failures in any of the tests, all results will be written to disk so you can visually analyse the results. 
 Note that because of graphviz limitations, all graphs will be serialized as normal graphs instead of hypergraphs, so you need to manually keep track of this. 
