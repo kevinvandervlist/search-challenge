@@ -58,7 +58,7 @@ After doing so, you can run all tests against your implementation by enabling th
 ## Examples
 You can look at the small testcases for a number of examples: [SearchTestCases](src/test/scala/com/ing/sea/pdeng/graph/search/testcases/SearchTestCases.scala).
 This can be useful to figure out what is expected behaviour in specific situations.
-As for a _very_ naive algorithm, an indication of how things should work from a functional perspective can be found in [NaiveTailRec](src/test/scala/com/ing/sea/pdeng/graph/search/testcases/NaiveTailRec.scala). 
+As for a _very_ naive algorithm, an indication of how things should work from a functional perspective can be found in [NaiveTailRec](src/main/scala/com/ing/sea/pdeng/graph/search/NaiveTailRec.scala). 
 You can use this as a reference implementation, although it's obviously extremely inefficient and slow. 
 
 When there are failures in any of the tests, all results will be written to disk so you can visually analyse the results. 
