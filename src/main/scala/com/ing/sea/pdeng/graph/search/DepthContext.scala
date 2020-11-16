@@ -13,9 +13,9 @@ case class DepthContext[V, DV <: V, FV <: V, E[+X] <: DiHyperEdgeLikeIn[X]]
     graph: Graph[V, E],
     target: DV,
     given: Set[DV],
-    maxDepth: Int,
 
     /* feel free to edit additional properties if you think that's required */
+    maxDepth: Int = Integer.MAX_VALUE,
     seen: Set[DV] = Set.empty[DV],
     depth: Int = 0,
     trace: Queue[HyperEdgeInfo[V, DV, FV]] = Queue.empty,

@@ -1,8 +1,9 @@
 package com.ing.sea.pdeng.graph.search
 
-import com.ing.sea.pdeng.graph.{Type, Vertex}
+import com.ing.sea.pdeng.graph.{CallableUnit, Type, Vertex}
 import com.ing.sea.pdeng.graph.Vertex.t
 import com.ing.sea.pdeng.graph.csv.CSVReader
+import com.ing.sea.pdeng.graph.search.javacompat.JSearchChallengeRunner
 import com.ing.sea.pdeng.graph.search.testcases.SearchTestCases
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.tags.Slow
@@ -14,8 +15,8 @@ import scala.io.Source
 
 @Slow
 class TypeGraphSearchFilesSpec extends AnyWordSpec with Matchers with SearchTestCases {
-  val strategies: List[NaiveTailRec] = List(
-    // new EfficientSearchStrategyJava,
+  val strategies: List[SearchChallenge] = List(
+    // new JSearchChallengeRunner(new EfficientSearchStrategyJava),
     // new EfficientSearchStrategyScala,
     // Note that this fails, because it's really naive :)
     // new NaiveTailRec
@@ -35,7 +36,7 @@ class TypeGraphSearchFilesSpec extends AnyWordSpec with Matchers with SearchTest
       for ((g, t, a, expectedSize) <- graphs) {
         s"searching for ${t.name} in ${g.size}" in {
           val tst = asTraversalTest(g, t, a)
-          val traversals = tst.traversals(s)
+          val traversals = tst.traversals(s.asInstanceOf[TypeGraphSearch[Vertex, Type, CallableUnit, WDiHyperEdge, DepthContext[Vertex, Type, CallableUnit, WDiHyperEdge]]])
           for(traversal <- traversals) {
             assert(ValidateSolution.isValid(a, traversal), "Invalid trace found")
           }

@@ -12,7 +12,7 @@ import scala.jdk.CollectionConverters._
 
 class NaiveTailRec extends SearchChallenge {
   override def traversals(ctx: C): java.lang.Iterable[util.List[WDiHyperEdge[V]]] =
-    new NaiveTraverser(ctx, predecessorsContaining(_, ctx.graph))
+    new NaiveTraverser(DepthContext(ctx.graph, ctx.target, ctx.`given`), predecessorsContaining(_, ctx.graph))
       .run()
       .map(_.asJava)
       .asJava

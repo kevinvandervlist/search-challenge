@@ -59,17 +59,6 @@ trait SearchTestCases {
     override val expectedResults: List[List[WDiHyperEdge[Vertex]]] = List.empty
   }
 
-  protected val maximumSearchDepthReached: TraversalTest = new TraversalTest {
-    val e1 = e(t("a"), cu("f1"), t("b"))
-    val e2 = e(t("b"), cu("f2"), t("c"))
-    val e3 = e(t("c"), cu("f3"), t("d"))
-    override val target: Type = t("d")
-    override val available: Set[Type] = Set(t("a"))
-    override val graph: Graph[Vertex, WDiHyperEdge] = Graph(e1, e2, e3)
-    override val maxDepth: Int = 1
-    override val expectedResults: List[List[WDiHyperEdge[Vertex]]] = List.empty
-  }
-
   /*
     e1: f1(a,b) -> c
     e2: f2(c)   -> d

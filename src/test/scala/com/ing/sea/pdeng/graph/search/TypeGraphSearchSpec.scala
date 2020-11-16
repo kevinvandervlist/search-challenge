@@ -5,6 +5,7 @@ import java.nio.file.Files
 
 import com.ing.sea.pdeng.graph.{CallableUnit, Type, Vertex}
 import com.ing.sea.pdeng.graph.dot.ImageWriter
+import com.ing.sea.pdeng.graph.search.javacompat.JSearchChallengeRunner
 import com.ing.sea.pdeng.graph.search.testcases.SearchTestCases
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
@@ -12,8 +13,8 @@ import scalax.collection.edge.WDiHyperEdge
 
 class TypeGraphSearchSpec extends AnyWordSpec with Matchers with SearchTestCases {
   val strategies: List[SearchChallenge] = List(
-//    new EfficientSearchStrategyJava,
-//    new EfficientSearchStrategyScala,
+    // new JSearchChallengeRunner(new EfficientSearchStrategyJava),
+    // new EfficientSearchStrategyScala,
     new NaiveTailRec,
   )
   type Search = TypeGraphSearch[Vertex, Type, CallableUnit, WDiHyperEdge, DepthContext[Vertex, Type, CallableUnit, WDiHyperEdge]]
@@ -21,7 +22,6 @@ class TypeGraphSearchSpec extends AnyWordSpec with Matchers with SearchTestCases
   val tests = Map(
     "not find a path when there is none available" -> noPathAvailable,
     "not find a path when a vertex dependency cannot be satisfied" -> noPathAvailableBecauseUnsatisfiableDependency,
-    "abort search when maximum depth is reached" -> maximumSearchDepthReached,
     "find a path when there is direct one available" -> linearPathAvailable,
     "find a path when there is a direct one available with joins" -> composedPathAvailable,
     "find a path when there is a direct one available with joins but also with spurious paths" -> composedPathsAvailableWithSuperfluousPaths,
@@ -53,7 +53,7 @@ class TypeGraphSearchSpec extends AnyWordSpec with Matchers with SearchTestCases
       // Run all the registered tests
       for ((name, t) <- tests) {
         name in {
-          evaluate(t, s)
+          evaluate(t, s.asInstanceOf[TypeGraphSearch[Vertex, Type, CallableUnit, WDiHyperEdge, DepthContext[Vertex, Type, CallableUnit, WDiHyperEdge]]])
         }
       }
     }
