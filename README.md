@@ -16,6 +16,9 @@ The characteristics of the graph are the following:
 * The graph H consists of the following edges: (1) `a, b, f, c`, (2) `g, d` and (3) `c, d, h, e`. 
 * Here, `a`, `b`, `c`, `d` and `e` are `Type`s. 
 * Accordingly, `f`, `g` and `h` are `Callable Unit`s.
+  * (1): `a` and `b` are argument `Type`s, `f` is the `Callable Unit` and `c` is a producible `Type`.
+  * (2): There are no argument `Type`s, `g` is the `Callable Unit` and `d` is a producible `Type`
+  * (3): `c` and `d` are argument `Type`s, `g` is the `Callable Unit` and `e` is a producible `Type` 
 
 ### Searching
 The search algorithm has three inputs:
@@ -40,8 +43,8 @@ Of course, when things more tests might be added to explain any inconsistencies.
 
 ## Defining an implementation
 You can implement your own implementation in either of these classes:
-* [Scala](src/main/scala/com/ing/sea/pdeng/graph/search/EfficientSearchStrategy.scala)
-* [Java](src/main/java/com/ing/sea/pdeng/graph/search/EfficientSearchStrategy.java)
+* [Scala](src/main/scala/com/ing/sea/pdeng/graph/search/EfficientSearchStrategyScala.scala)
+* [Java](src/main/java/com/ing/sea/pdeng/graph/search/EfficientSearchStrategyJava.java)
 
 ## Evaluating your implementation
 After doing so, you can run all tests against your implementation by enabling the testsuite in the following class:
