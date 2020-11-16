@@ -1,0 +1,10 @@
+language: scala
+jdk:
+  - openjdk8
+  - openjdk11
+addons:
+  apt:
+    packages:
+      - graphviz
+script:
+  - mvn clean verify
