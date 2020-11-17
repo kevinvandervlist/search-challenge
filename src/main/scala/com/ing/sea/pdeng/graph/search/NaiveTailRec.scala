@@ -1,21 +1,17 @@
 package com.ing.sea.pdeng.graph.search
 
-import java.util
-
 import scalax.collection.Graph
 import scalax.collection.edge.WDiHyperEdge
 
 import scala.collection.immutable.Queue
 import scala.collection.mutable
 import scala.util.control.TailCalls.{TailRec, done, tailcall}
-import scala.jdk.CollectionConverters._
 
 class NaiveTailRec extends SearchChallenge {
-  override def traversals(ctx: C): java.lang.Iterable[util.List[WDiHyperEdge[V]]] =
-    new NaiveTraverser(DepthContext(ctx.graph, ctx.target, ctx.`given`), predecessorsContaining(_, ctx.graph))
+  override def traversals(ctx: C): LazyList[List[WDiHyperEdge[V]]] =
+    LazyList.from(new NaiveTraverser(DepthContext(ctx.graph, ctx.target, ctx.`given`), predecessorsContaining(_, ctx.graph))
       .run()
-      .map(_.asJava)
-      .asJava
+      .map(_.toList))
 
   private def predecessorsContaining(node: DV, graph: Graph[V, WDiHyperEdge]): Set[EdgeInfo] =
     predecessorEdgesContaining(node, graph).map(HyperEdgeInfo.apply[V, DV, FV]).toSet

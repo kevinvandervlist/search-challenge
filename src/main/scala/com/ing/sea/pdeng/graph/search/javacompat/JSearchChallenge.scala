@@ -9,5 +9,5 @@ import scalax.collection.edge.WDiHyperEdge
 abstract class JSearchChallenge {
   def traversals_java(ctx: JContext,
                       predecessor: Type => java.lang.Iterable[HyperEdgeInfo[Vertex, Type, CallableUnit]],
-                      successor: Type => java.lang.Iterable[HyperEdgeInfo[Vertex, Type, CallableUnit]]): java.lang.Iterable[util.List[WDiHyperEdge[Vertex]]]
+                      successor: Type => java.lang.Iterable[HyperEdgeInfo[Vertex, Type, CallableUnit]]): java.util.stream.Stream[util.List[WDiHyperEdge[Vertex]]]
 }

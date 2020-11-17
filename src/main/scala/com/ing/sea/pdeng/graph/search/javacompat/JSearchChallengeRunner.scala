@@ -7,6 +7,7 @@ import com.ing.sea.pdeng.graph.search.{HyperEdgeInfo, SearchChallenge, Traversal
 import scalax.collection.Graph
 import scalax.collection.edge.WDiHyperEdge
 import scala.jdk.CollectionConverters._
+import scala.jdk.StreamConverters._
 
 class JSearchChallengeRunner(search: JSearchChallenge) extends SearchChallenge {
   def predecessor(t: Type, g: Graph[Vertex, WDiHyperEdge]): java.lang.Iterable[HyperEdgeInfo[Vertex, Type, CallableUnit]] =
@@ -15,6 +16,8 @@ class JSearchChallengeRunner(search: JSearchChallenge) extends SearchChallenge {
   def successor(t: Type, g: Graph[Vertex, WDiHyperEdge]): java.lang.Iterable[HyperEdgeInfo[Vertex, Type, CallableUnit]] =
     successorEdgesContaining(t, g).map(HyperEdgeInfo.apply[Vertex, Type, CallableUnit]).asJava
 
-  override def traversals(ctx: TraversalContext[V, DV, FV, WDiHyperEdge]): lang.Iterable[util.List[WDiHyperEdge[V]]] =
-    search.traversals_java(new JContext(ctx.target, ctx.`given`.asJava), predecessor(_, ctx.graph), successor(_, ctx.graph))
+  override def traversals(ctx: TraversalContext[V, DV, FV, WDiHyperEdge]): LazyList[List[WDiHyperEdge[V]]] = {
+    val javaResult = search.traversals_java(new JContext(ctx.target, ctx.`given`.asJava), predecessor(_, ctx.graph), successor(_, ctx.graph))
+    javaResult.toScala(LazyList).map(_.asScala.toList)
+  }
 }

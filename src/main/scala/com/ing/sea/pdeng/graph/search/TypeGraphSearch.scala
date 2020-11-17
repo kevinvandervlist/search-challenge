@@ -7,7 +7,7 @@ trait TypeGraphSearch[V, DV <: V, FV <: V, EE[+X] <: DiHyperEdgeLikeIn[X], CC <:
   type Solution = IndexedSeq[EdgeInfo]
   type Solutions = IndexedSeq[Solution]
 //  /** Yield an iterable of traversals of the given graph, based on the constraints provided here */
-  def traversals(ctx: C): java.lang.Iterable[java.util.List[EE[V]]]
+  def traversals(ctx: C): LazyList[List[EE[V]]]
   def name: String = getClass.getSimpleName
 
   @inline

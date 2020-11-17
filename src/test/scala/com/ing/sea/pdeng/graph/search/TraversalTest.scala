@@ -38,7 +38,7 @@ trait TraversalTest {
   val expectedResults: List[List[WDiHyperEdge[Vertex]]]
   val maxDepth: Int
   def traversals(s: TypeGraphSearch[Vertex, Type, CallableUnit, WDiHyperEdge, DepthContext[Vertex, Type, CallableUnit, WDiHyperEdge]]): Iterable[Seq[WDiHyperEdge[Vertex]]] =
-    s.traversals(DepthContext[Vertex, Type, CallableUnit, WDiHyperEdge](graph, target, available, maxDepth)).asScala.map(_.asScala.toSeq)
+    s.traversals(DepthContext[Vertex, Type, CallableUnit, WDiHyperEdge](graph, target, available, maxDepth))
 
   def graphDot: String = {
     graph.toDot(
