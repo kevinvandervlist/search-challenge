@@ -3,7 +3,6 @@ package com.ing.sea.pdeng.graph.search
 import com.ing.sea.pdeng.graph.{CallableUnit, Type, Vertex}
 import com.ing.sea.pdeng.graph.Vertex.t
 import com.ing.sea.pdeng.graph.csv.CSVReader
-import com.ing.sea.pdeng.graph.search.javacompat.JSearchChallengeRunner
 import com.ing.sea.pdeng.graph.search.testcases.SearchTestCases
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.tags.Slow
@@ -22,10 +21,14 @@ class TypeGraphSearchFilesSpec extends AnyWordSpec with Matchers with SearchTest
     // new NaiveTailRec
   )
 
-  val tests = List(
+  val tests: Seq[(String, Type, Set[Type], Option[Int])] = List(
     ("large.csv", t("RTyLrWLwQv"), Set(
       t("wqiaiyuUwj"),
-    ), 1)
+    ), Some(1)),
+    ("large2.csv", t("wZNHUjQJZm"), Set(
+      t("LemWqhRXIa"),
+      t("nurXcDYLrM")
+    ), None)
   )
 
   private val graphs = tests.map(t => (CSVReader.fromCSV(Source.fromResource(t._1).getLines()), t._2, t._3, t._4))
@@ -40,7 +43,10 @@ class TypeGraphSearchFilesSpec extends AnyWordSpec with Matchers with SearchTest
           for(traversal <- traversals) {
             assert(ValidateSolution.isValid(a, traversal), "Invalid trace found")
           }
-          traversals.size shouldBe expectedSize
+          expectedSize match {
+            case Some(expected) => traversals.size shouldBe expected
+            case None => // I don't know what the expected size is
+          }
         }
       }
     }
