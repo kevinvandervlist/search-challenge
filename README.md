@@ -25,8 +25,7 @@ The search algorithm has three inputs:
 * A graph
 * A *single* `goal` (which is always a `Type`).
 * Zero or more `given`s (which are always `Type`s)
-
-Any search algorithm must (eventually) yield all traces that produce the `goal`, based on the set of `given` `Type`s. 
+ 
 During traversal, in order to decide whether a single edge can be contained in a solution for the search, one must evaluate the _usefulness_ of an edge.
 If we have our example graph, and are looking at edge (3), we can only assume it to be `useful` iff both `Type`s `c` and `d` can be produced. 
 In order for those types to be produced, we again look at the same question. 
@@ -39,7 +38,11 @@ So, we are looking for the most effective way for you to solve this problem!
 
 You can use any approach you want. 
 Pruning the graph, caching (intermediate) results, everything is permitted as long as an implementation satisfies the test suite. 
-Of course, when things more tests might be added to explain any inconsistencies. 
+Of course, when things more tests might be added to explain any inconsistencies.
+
+Any search algorithm must (eventually) yield all traces that produce the `goal`, based on the set of `given` `Type`s.
+However, this can be done in an incremental or lazy way if you want. 
+It is fine to prioritise one trace over another if that provides you with faster (initial) results, as long as eventually all solutions are found.   
 
 ## Defining an implementation
 You can implement your own implementation in either of these classes:
