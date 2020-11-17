@@ -1,4 +1,4 @@
-# Search Challenge
+# Search Challenge [![Build Status](https://travis-ci.com/kevinvandervlist/search-challenge.svg?branch=master)](https://travis-ci.com/kevinvandervlist/search-challenge)
 
 ## Description
 The challenge is implementing a search algorithm for a hyper graph, and doing so in an 'optimal' way. 
