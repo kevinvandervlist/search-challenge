@@ -4,6 +4,7 @@ import com.ing.sea.pdeng.graph.CallableUnit;
 import com.ing.sea.pdeng.graph.Type;
 import com.ing.sea.pdeng.graph.Vertex;
 import com.ing.sea.pdeng.graph.search.javacompat.JContext;
+import com.ing.sea.pdeng.graph.search.javacompat.JHyperEdgeInfo;
 import com.ing.sea.pdeng.graph.search.javacompat.JSearchChallenge;
 import scalax.collection.edge.WDiHyperEdge;
 
@@ -15,9 +16,9 @@ import java.util.stream.Stream;
 public class EfficientSearchStrategyJava extends JSearchChallenge {
     @Override
     public Stream<List<WDiHyperEdge<Vertex>>> traversals_java(JContext ctx,
-                                                              Function<Type, Iterable<HyperEdgeInfo<Vertex, Type, CallableUnit>>> predecessor,
-                                                              Function<Type, Iterable<HyperEdgeInfo<Vertex, Type, CallableUnit>>> successor,
-                                                              Supplier<Iterable<HyperEdgeInfo<Vertex, Type, CallableUnit>>> allEdges) {
+                                                              Function<Type, Iterable<JHyperEdgeInfo>> predecessor,
+                                                              Function<Type, Iterable<JHyperEdgeInfo>> successor,
+                                                              Supplier<Iterable<JHyperEdgeInfo>> allEdges) {
         // A set with the 'given' nodes known at the start of a search: ctx.given;
         // A 'target' node we want to reach: ctx.target
         // For example, to give all edges producing 'target', one can query:
