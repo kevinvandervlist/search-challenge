@@ -1,0 +1,1 @@
+The contents of this package are based on the code from https://github.com/rensink/pathsearch
