@@ -11,6 +11,8 @@ import scala.jdk.CollectionConverters._
 import scala.jdk.StreamConverters._
 
 class JSearchChallengeRunner(search: JSearchChallenge) extends SearchChallenge {
+  override def name: String = search.getClass.getSimpleName
+
   @inline def toJHyperEdgeInfo(edge: WDiHyperEdge[Vertex]): JHyperEdgeInfo = {
     val info = HyperEdgeInfo.apply(edge)
     new JHyperEdgeInfo(
