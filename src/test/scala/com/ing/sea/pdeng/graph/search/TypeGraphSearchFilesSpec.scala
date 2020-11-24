@@ -1,7 +1,7 @@
 package com.ing.sea.pdeng.graph.search
 
 import com.ing.sea.pdeng.graph.{CallableUnit, Type, Vertex}
-import com.ing.sea.pdeng.graph.Vertex.t
+import com.ing.sea.pdeng.graph.Vertex.{cu, e, t}
 import com.ing.sea.pdeng.graph.csv.CSVReader
 import com.ing.sea.pdeng.graph.search.javacompat.JSearchChallengeRunner
 import com.ing.sea.pdeng.graph.search.rensink.RensinkSearchStrategyJava
@@ -24,10 +24,21 @@ class TypeGraphSearchFilesSpec extends AnyWordSpec with Matchers with SearchTest
     // new NaiveTailRec
   )
 
-  val tests: Seq[(String, Type, Set[Type], Option[Int])] = List(
+  val tests: Seq[(String, Type, Set[Type], Option[Seq[Seq[WDiHyperEdge[Vertex]]]])] = List(
     ("large.csv", t("RTyLrWLwQv"), Set(
       t("wqiaiyuUwj"),
-    ), Some(1)),
+    ), Some(List(
+      List(
+        e(t("wqiaiyuUwj"), t("OcxaVFUHzO"), cu("hAariiCoGS"), t("RTyLrWLwQv")),
+        e(t("LybrYItEwm"), t("iJdMdVxaay"), t("ylVuJBSVgq"), cu("zTnrkygQnO"), t("OcxaVFUHzO")),
+        e(t("POPBgcHRNk"), cu("aVVSpwmOHh"), t("LybrYItEwm")),
+        e(t("xCkleBYfCf"), cu("OKAZUSamjH"), t("POPBgcHRNk")),
+        e(t("rWqSRrExjd"), cu("HxQhhYFwAt"), t("xCkleBYfCf")),
+        e(t("wqiaiyuUwj"), cu("NCBqyEVgec"), t("rWqSRrExjd")),
+        e(t("POPBgcHRNk"), cu("ARyFRHOwAu"), t("iJdMdVxaay")),
+        e(t("POPBgcHRNk"), cu("juKlVquZpT"), t("ylVuJBSVgq")),
+      ),
+    ))),
     ("large2.csv", t("wZNHUjQJZm"), Set(
       t("LemWqhRXIa"),
       t("nurXcDYLrM")
@@ -39,16 +50,30 @@ class TypeGraphSearchFilesSpec extends AnyWordSpec with Matchers with SearchTest
   for(s <- strategies) {
     s"Strategy ${s.name}" should {
       // Run all the registered tests -- they all should find solutions
-      for ((g, t, a, expectedSize) <- graphs) {
+      for ((g, t, a, expectedResults) <- graphs) {
         s"searching for ${t.name} in ${g.size}" in {
           val tst = asTraversalTest(g, t, a)
           val traversals = tst.traversals(s.asInstanceOf[TypeGraphSearch[Vertex, Type, CallableUnit, WDiHyperEdge, DepthContext[Vertex, Type, CallableUnit, WDiHyperEdge]]])
           for(traversal <- traversals) {
             assert(ValidateSolution.isValid(a, traversal), "Invalid trace found")
           }
-          expectedSize match {
-            case Some(expected) => traversals.size shouldBe expected
-            case None => // I don't know what the expected size is
+          expectedResults match {
+            case Some(expected) =>
+              traversals.size shouldBe expected.size
+              for(gt <- expected) {
+                // Each expected outcome should be there
+                var exists = false
+                val gtSet = gt.toSet
+                for(at <- traversals) {
+                  if(gtSet == at.toSet) {
+                    exists = true
+                  }
+                }
+                if(! exists) {
+                  fail(s"Test trace $gt is not found in the actual traversals")
+                }
+              }
+            case None => // I don't know what the expected result is
           }
         }
       }
