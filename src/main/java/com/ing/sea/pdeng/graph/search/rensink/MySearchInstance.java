@@ -8,114 +8,114 @@ import java.util.*;
 
 public class MySearchInstance implements Iterator<Solution> {
     private final GraphFacade gf;
-	private final Vertex product;
+    private final Vertex product;
     /** List of nodes already made. */
     private final Deque<Vertex> made;
     /** List of nodes yet to be made. */
     private final Deque<Vertex> frontier;
-	/** Mapping from found nodes to their (currently known) downstream nodes. */
+    /** Mapping from found nodes to their (currently known) downstream nodes. */
     private final Map<Vertex, Set<Vertex>> downstreamMap;
     /** Mapping from made nodes to the index of their maker. */
     private final Map<Vertex, Integer> makerIxMap;
-	/**
-	 * Mapping from producing edges to the downstream delta of their early
-	 * producers.
-	 */
-	private final Map<JHyperEdgeInfo, Map<Vertex, Set<Vertex>>> deltasMap;
-	/** Flag indicating that the search space is exhausted. */
-	private boolean exhausted;
-	/**
-	 * Flag indicating that the next solution has been found but not yet delivered.
-	 */
-	private boolean nextValid;
+    /**
+     * Mapping from producing edges to the downstream delta of their early
+     * producers.
+     */
+    private final Map<JHyperEdgeInfo, Map<Vertex, Set<Vertex>>> deltasMap;
+    /** Flag indicating that the search space is exhausted. */
+    private boolean exhausted;
+    /**
+     * Flag indicating that the next solution has been found but not yet delivered.
+     */
+    private boolean nextValid;
     /** Counts the number of steps taken during search. */
     private int stepCount;
-	
+
     public MySearchInstance(GraphFacade gf, Vertex product) {
         this.gf = gf;
-		this.product = product;
+        this.product = product;
         this.made = new LinkedList<>();
         this.frontier = new LinkedList<>();
         this.makerIxMap = new HashMap<>();
         this.downstreamMap = new HashMap<>();
-		this.deltasMap = new HashMap<>();
+        this.deltasMap = new HashMap<>();
         this.frontier.add(product);
         this.downstreamMap.put(product, Collections.emptySet());
         this.exhausted = ! gf.getNodes().contains(product);
-		this.nextValid = false;
-	}
+        this.nextValid = false;
+    }
 
-	public Graph getGraph() {
+    public Graph getGraph() {
         return this.gf.getGraph();
-	}
+    }
 
-	public Vertex getProduct() {
-		return this.product;
-	}
+    public Vertex getProduct() {
+        return this.product;
+    }
 
     public int getStepCount() {
         return this.stepCount;
     }
-	
-	@Override
-	public boolean hasNext() {
-		if (!this.exhausted && !this.nextValid) {
-			findNext();
-		}
+
+    @Override
+    public boolean hasNext() {
+        if (!this.exhausted && !this.nextValid) {
+            findNext();
+        }
         return !this.exhausted;
-	}
+    }
 
-	@Override
-	public Solution next() {
-		if (!hasNext()) {
-			throw new NoSuchElementException();
-		}
+    @Override
+    public Solution next() {
+        if (!hasNext()) {
+            throw new NoSuchElementException();
+        }
         Solution result = computeSolution();
-		this.nextValid = false;
-		return result;
-	}
+        this.nextValid = false;
+        return result;
+    }
 
-	private Solution computeSolution() {
+    private Solution computeSolution() {
         Solution result = new Solution(getGraph(), getProduct());
         this.made.stream().map(this::getMaker).forEach(result::add);
         result.setStepCount(getStepCount());
-		return result;
-	}
+        return result;
+    }
 
-	private void findNext() {
-		assert !this.nextValid;
+    private void findNext() {
+        assert !this.nextValid;
         boolean forward = !this.frontier.isEmpty();
-		while (!this.exhausted && !this.nextValid) {
-			if (forward) {
-				forward = nextNode();
-			} else {
+        while (!this.exhausted && !this.nextValid) {
+            if (forward) {
+                forward = nextNode();
+            } else {
                 forward = nextMaker();
-			}
+            }
             log();
-			if (forward) {
+            if (forward) {
                 this.nextValid = this.frontier.isEmpty();
-			} else {
+            } else {
                 this.exhausted = this.made.isEmpty();
-			}
-		}
-	}
+            }
+        }
+    }
 
-	/** Find a production for the next found, unproduced node. */
-	private boolean nextNode() {
+    /** Find a production for the next found, unproduced node. */
+    private boolean nextNode() {
         Vertex next = this.frontier.poll();
-		return nextStep(next, 0);
-	}
+        return nextStep(next, 0);
+    }
 
-	/** Find the next production for the most recently produced node. */
+    /** Find the next production for the most recently produced node. */
     private boolean nextMaker() {
         Vertex next = this.made.removeLast();
         Integer makerIx = this.makerIxMap.remove(next);
         removeMaker(getInEdge(next, makerIx));
         return nextStep(next, makerIx + 1);
-	}
+    }
 
-	private boolean nextStep(Vertex next, int from) {
-		boolean success = false;
+    private boolean nextStep(Vertex next, int from) {
+        boolean success = false;
         List<JHyperEdgeInfo> inEdges = getInEdges(next);
         Set<Vertex> downstream = this.downstreamMap.get(next);
         int makerIx = from;
@@ -123,23 +123,23 @@ public class MySearchInstance implements Iterator<Solution> {
             JHyperEdgeInfo e = inEdges.get(makerIx);
             if (this.gf.getPre(e).stream().anyMatch(downstream::contains)) {
                 makerIx++;
-			} else {
-				success = true;
-			}
-		}
-		if (success) {
+            } else {
+                success = true;
+            }
+        }
+        if (success) {
             addMaker(next, makerIx);
         } else {
             this.frontier.push(next);
-		}
+        }
         this.stepCount++;
-		return success;
-	}
+        return success;
+    }
 
-	/**
-	 * Adds the source nodes of a given edge to the found nodes, and sets or updates
-	 * the upstream nodes.
-	 */
+    /**
+     * Adds the source nodes of a given edge to the found nodes, and sets or updates
+     * the upstream nodes.
+     */
     /**
      * @param made
      * @param makerIx
@@ -184,7 +184,7 @@ public class MySearchInstance implements Iterator<Solution> {
         // Iterate over the maker's source nodes in reverse order
         ListIterator<Type> predIter = edge.in.listIterator(edge.in.size());
         Map<Vertex, Set<Vertex>> delta = this.deltasMap.remove(edge);
-		while (predIter.hasPrevious()) {
+        while (predIter.hasPrevious()) {
             Vertex pred = predIter.previous();
             if (!delta.containsKey(pred)) {
                 // this predecessor was found later; it must be the last in the frontier
@@ -192,12 +192,12 @@ public class MySearchInstance implements Iterator<Solution> {
                         : String.format("Source %s of %s is not at front of %s", pred, edge, this.frontier);
                 this.frontier.remove();
                 this.downstreamMap.remove(pred);
-			}
-		}
-		// restore the downstream of the early predecessors
+            }
+        }
+        // restore the downstream of the early predecessors
         delta.entrySet().stream().forEach(e -> this.downstreamMap.get(e.getKey()).removeAll(e.getValue()));
-	}
-	
+    }
+
     private boolean isMade(Vertex n) {
         return this.makerIxMap.containsKey(n);
     }
@@ -214,10 +214,10 @@ public class MySearchInstance implements Iterator<Solution> {
         return getInEdges(n).get(i);
     }
 
-	private List<JHyperEdgeInfo> getInEdges(Vertex node) {
+    private List<JHyperEdgeInfo> getInEdges(Vertex node) {
         return this.gf.getInEdges(node);
-	}
-	
+    }
+
     static private final boolean LOG = false;
 
     private void log() {

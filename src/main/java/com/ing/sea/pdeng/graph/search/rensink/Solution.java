@@ -48,21 +48,21 @@ public class Solution extends ArrayList<JHyperEdgeInfo> {
      * @param target
      * @return
      */
-	public boolean validate(Vertex target) {
+    public boolean validate(Vertex target) {
         Set<Type> nodes = this.stream().map(x -> x.out).collect(Collectors.toSet());
-		if (nodes.size() != this.size()) {
-			return false;
-		}
+        if (nodes.size() != this.size()) {
+            return false;
+        }
         HashSet<Vertex> produced = new HashSet<>();
         HashSet<Type> unusedNodes = new HashSet<>(nodes);
         HashSet<JHyperEdgeInfo> unusedEdges = new HashSet<>(this);
-		Map<Vertex, Set<JHyperEdgeInfo>> outEdges = new HashMap<>();
-		nodes.forEach(n -> outEdges.put(n, new HashSet<>()));
-		try {
-			this.forEach(e -> e.in.forEach(n -> outEdges.get(n).add(e)));
-		} catch (NullPointerException exc) {
-			return false;
-		}
+        Map<Vertex, Set<JHyperEdgeInfo>> outEdges = new HashMap<>();
+        nodes.forEach(n -> outEdges.put(n, new HashSet<>()));
+        try {
+            this.forEach(e -> e.in.forEach(n -> outEdges.get(n).add(e)));
+        } catch (NullPointerException exc) {
+            return false;
+        }
         LinkedList<Vertex> fresh = new LinkedList<>();
         for (JHyperEdgeInfo e : this) {
             if (e.in.isEmpty()) {
@@ -81,21 +81,21 @@ public class Solution extends ArrayList<JHyperEdgeInfo> {
                     fresh.add(e.out);
                 }
             }
-		}
-		if (!produced.equals(nodes)) {
-			return false;
-		}
+        }
+        if (!produced.equals(nodes)) {
+            return false;
+        }
         if (!unusedEdges.isEmpty()) {
             return false;
         }
         if (unusedNodes.size() != 1) {
-			return false;
-		}
+            return false;
+        }
         if (!unusedNodes.iterator().next().equals(target)) {
-			return false;
-		}
-		return true;
-	}
+            return false;
+        }
+        return true;
+    }
 
     public String getName() {
         return this.graph.getName() + "-" + this.target.name() + "-" + this.id;

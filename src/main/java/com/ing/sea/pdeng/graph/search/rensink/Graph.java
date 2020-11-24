@@ -12,38 +12,38 @@ import java.util.Set;
  *
  */
 public class Graph {
-	private final String name;
-	private final Set<Vertex> nodes;
-	private final Set<JHyperEdgeInfo> edges;
-	
-	public Graph(String name) {
-		this.name = name;
-		this.nodes = new LinkedHashSet<>();
-		this.edges = new LinkedHashSet<>();
-	}
+    private final String name;
+    private final Set<Vertex> nodes;
+    private final Set<JHyperEdgeInfo> edges;
 
-	public String getName() {
-		return this.name;
-	}
+    public Graph(String name) {
+        this.name = name;
+        this.nodes = new LinkedHashSet<>();
+        this.edges = new LinkedHashSet<>();
+    }
 
-	public Set<Vertex> getNodes() {
-		return this.nodes;
-	}
+    public String getName() {
+        return this.name;
+    }
 
-	public Set<JHyperEdgeInfo> getEdges() {
-		return this.edges;
-	}
+    public Set<Vertex> getNodes() {
+        return this.nodes;
+    }
+
+    public Set<JHyperEdgeInfo> getEdges() {
+        return this.edges;
+    }
 
     public boolean addNode(Vertex node) {
         return this.nodes.add(node);
-	}
+    }
 
     public boolean addEdge(JHyperEdgeInfo edge) {
         return this.edges.add(edge);
-	}
+    }
 
     @Override
     public String toString() {
-	    return String.format("Graph: (V: %s, E: %s)", nodes.size(), edges.size());
+        return String.format("Graph: (V: %s, E: %s)", nodes.size(), edges.size());
     }
 }
