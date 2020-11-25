@@ -4,19 +4,8 @@ import com.ing.sea.pdeng.graph.Vertex;
 
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 
 public class MySearch implements Search {
-    /** Flag controlling whether log messages are emitted. */
-    private static boolean LOG = true;
-
-    private static void log(String message, Object... args) {
-        if (LOG) {
-            System.out.printf(message, args);
-            System.out.println();
-        }
-    }
-
     private final GraphFacade gf;
 
     public MySearch(Graph graph) {
@@ -52,10 +41,10 @@ public class MySearch implements Search {
             });
         }
         GraphFacade result = new GraphFacade(g);
-        log("Result of pruning %s", gf.getName());
-        log("Original graph: %s nodes, %s edges", gf.getNodes().size(), gf.getEdges().size());
-        log("Pruned graph: %s nodes, %s edges", result.getNodes().size(), result.getEdges().size());
-        log("Max depth: %s", result.getNodeDepthMap().values().stream().reduce(0, Integer::max));
+//        log("Result of pruning %s", gf.getName());
+//        log("Original graph: %s nodes, %s edges", gf.getNodes().size(), gf.getEdges().size());
+//        log("Pruned graph: %s nodes, %s edges", result.getNodes().size(), result.getEdges().size());
+//        log("Max depth: %s", result.getNodeDepthMap().values().stream().reduce(0, Integer::max));
         return result;
     }
 }

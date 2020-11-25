@@ -4,8 +4,6 @@ import com.ing.sea.pdeng.graph.Type;
 import com.ing.sea.pdeng.graph.Vertex;
 import com.ing.sea.pdeng.graph.search.javacompat.JHyperEdgeInfo;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,8 +13,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Solution extends ArrayList<JHyperEdgeInfo> {
-    private static final String FILE_SEP = System.getProperty("file.separator");
-    private static final String DOT_DIR = System.getProperty("user.dir") + FILE_SEP + "dots";
     private static int id_count;
     private int stepCount;
     private final Graph graph;

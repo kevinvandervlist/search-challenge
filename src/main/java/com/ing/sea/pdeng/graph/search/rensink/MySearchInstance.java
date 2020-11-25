@@ -91,7 +91,6 @@ public class MySearchInstance implements Iterator<Solution> {
             } else {
                 forward = nextMaker();
             }
-            log();
             if (forward) {
                 this.nextValid = this.frontier.isEmpty();
             } else {
@@ -148,7 +147,7 @@ public class MySearchInstance implements Iterator<Solution> {
         this.made.add(made);
         this.makerIxMap.put(made, makerIx);
         JHyperEdgeInfo maker = getInEdge(made, makerIx);
-        HashMap<Vertex, Set<Vertex>> makerDeltas = new HashMap<Vertex, Set<Vertex>>();
+        Map<Vertex, Set<Vertex>> makerDeltas = new HashMap<>();
         this.deltasMap.put(maker, makerDeltas);
         // compute the resulting (additional) downstream
         ArrayList<Vertex> newDownstream = new ArrayList<>(this.downstreamMap.get(made));
@@ -169,7 +168,7 @@ public class MySearchInstance implements Iterator<Solution> {
                     if (makerDeltas.containsKey(next)) {
                         continue;
                     }
-                    Set<Vertex> nextDelta = new HashSet<Vertex>();
+                    Set<Vertex> nextDelta = new HashSet<>();
                     makerDeltas.put(next, nextDelta);
                     Set<Vertex> oldDownstream = this.downstreamMap.get(next);
                     newDownstream.stream().filter(oldDownstream::add).forEach(nextDelta::add);
@@ -189,7 +188,7 @@ public class MySearchInstance implements Iterator<Solution> {
         // Iterate over the maker's source nodes in reverse order
         ListIterator<Type> predIter = maker.in.listIterator(maker.in.size());
         Map<Vertex, Set<Vertex>> delta = this.deltasMap.remove(maker);
-        HashSet<Vertex> uniqueSource = new HashSet<Vertex>();
+        Set<Vertex> uniqueSource = new HashSet<>();
         while (predIter.hasPrevious()) {
             Vertex pred = predIter.previous();
             if (!uniqueSource.add(pred)) {
@@ -225,27 +224,5 @@ public class MySearchInstance implements Iterator<Solution> {
 
     private List<JHyperEdgeInfo> getInEdges(Vertex node) {
         return this.gf.getInEdges(node);
-    }
-
-    static private final boolean LOG = false;
-
-    private void log() {
-        if (LOG) {
-            StringBuilder b = new StringBuilder();
-            int i = 0;
-            for (Vertex n : this.made) {
-                b.append("" + i + ":");
-                b.append(this.makerIxMap.get(n));
-                b.append('/');
-                b.append(getInEdges(n).size());
-                b.append(' ');
-                i++;
-            }
-            for (Vertex n : this.frontier) {
-                b.append("" + i + ":. ");
-                i++;
-            }
-            System.out.println(b);
-        }
     }
 }
