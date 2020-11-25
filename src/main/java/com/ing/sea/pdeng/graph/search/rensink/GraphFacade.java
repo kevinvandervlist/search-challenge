@@ -17,6 +17,9 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+/**
+ * @author Arend Rensink
+ */
 public class GraphFacade {
     private final Graph graph;
 

@@ -1,6 +1,5 @@
 package com.ing.sea.pdeng.graph.search;
 
-import com.ing.sea.pdeng.graph.CallableUnit;
 import com.ing.sea.pdeng.graph.Type;
 import com.ing.sea.pdeng.graph.Vertex;
 import com.ing.sea.pdeng.graph.search.javacompat.JContext;

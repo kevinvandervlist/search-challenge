@@ -17,6 +17,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+/**
+ * @author Arend Rensink
+ */
 public class RensinkSearchStrategyJava extends JSearchChallenge {
     @Override
     public Stream<List<WDiHyperEdge<Vertex>>> traversals_java(JContext ctx,

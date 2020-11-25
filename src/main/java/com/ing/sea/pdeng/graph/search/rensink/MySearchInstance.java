@@ -6,6 +6,9 @@ import com.ing.sea.pdeng.graph.search.javacompat.JHyperEdgeInfo;
 
 import java.util.*;
 
+/**
+ * @author Arend Rensink
+ */
 public class MySearchInstance implements Iterator<Solution> {
     private final GraphFacade gf;
     private final Vertex product;

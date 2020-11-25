@@ -5,6 +5,9 @@ import com.ing.sea.pdeng.graph.Vertex;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+/**
+ * @author Arend Rensink
+ */
 public class MySearch implements Search {
     private final GraphFacade gf;
 

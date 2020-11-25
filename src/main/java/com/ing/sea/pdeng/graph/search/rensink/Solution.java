@@ -12,6 +12,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * @author Arend Rensink
+ */
 public class Solution extends ArrayList<JHyperEdgeInfo> {
     private static int id_count;
     private int stepCount;
