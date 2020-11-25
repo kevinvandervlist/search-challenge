@@ -153,7 +153,12 @@ public class MySearchInstance implements Iterator<Solution> {
         // compute the resulting (additional) downstream
         ArrayList<Vertex> newDownstream = new ArrayList<>(this.downstreamMap.get(made));
         newDownstream.add(made);
+        Set<Vertex> uniqueSource = new HashSet<>();
         for (Type pred : maker.in) {
+            if(!uniqueSource.add(pred)) {
+                // This is a duplicate source, do nothing
+                continue;
+            }
             if (this.downstreamMap.containsKey(pred)) {
                 // this is a previously found node
                 // add the new downstream to it and all its upstream
@@ -180,22 +185,26 @@ public class MySearchInstance implements Iterator<Solution> {
         }
     }
 
-    private void removeMaker(JHyperEdgeInfo edge) {
+    private void removeMaker(JHyperEdgeInfo maker) {
         // Iterate over the maker's source nodes in reverse order
-        ListIterator<Type> predIter = edge.in.listIterator(edge.in.size());
-        Map<Vertex, Set<Vertex>> delta = this.deltasMap.remove(edge);
+        ListIterator<Type> predIter = maker.in.listIterator(maker.in.size());
+        Map<Vertex, Set<Vertex>> delta = this.deltasMap.remove(maker);
+        HashSet<Vertex> uniqueSource = new HashSet<Vertex>();
         while (predIter.hasPrevious()) {
             Vertex pred = predIter.previous();
+            if (!uniqueSource.add(pred)) {
+                // this is a duplicate source; do nothing
+                continue;
+            }
             if (!delta.containsKey(pred)) {
-                // this predecessor was found later; it must be the last in the frontier
-                assert pred == this.frontier.peek()
-                        : String.format("Source %s of %s is not at front of %s", pred, edge, this.frontier);
+                // this predecessor was found later; it must be at the head of the frontier
+                assert pred == this.frontier.peek() : String.format("Source %s of %s is not at front of %s", pred, maker, this.frontier);
                 this.frontier.remove();
                 this.downstreamMap.remove(pred);
             }
         }
         // restore the downstream of the early predecessors
-        delta.entrySet().stream().forEach(e -> this.downstreamMap.get(e.getKey()).removeAll(e.getValue()));
+        delta.entrySet().forEach(e -> this.downstreamMap.get(e.getKey()).removeAll(e.getValue()));
     }
 
     private boolean isMade(Vertex n) {
