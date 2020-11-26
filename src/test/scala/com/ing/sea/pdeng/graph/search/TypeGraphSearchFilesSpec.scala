@@ -3,11 +3,14 @@ package com.ing.sea.pdeng.graph.search
 import com.ing.sea.pdeng.graph.{CallableUnit, Type, Vertex}
 import com.ing.sea.pdeng.graph.Vertex.{cu, e, t}
 import com.ing.sea.pdeng.graph.csv.CSVReader
+import com.ing.sea.pdeng.graph.search.cachingcats.CachingCats
 import com.ing.sea.pdeng.graph.search.javacompat.JSearchChallengeRunner
 import com.ing.sea.pdeng.graph.search.rensink.RensinkSearchStrategyJava
 import com.ing.sea.pdeng.graph.search.testcases.SearchTestCases
+import org.scalatest.concurrent.TimeLimitedTests
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.tags.Slow
+import org.scalatest.time.{Minute, Seconds, Span}
 import org.scalatest.wordspec.AnyWordSpec
 import scalax.collection.Graph
 import scalax.collection.edge.WDiHyperEdge
@@ -15,11 +18,21 @@ import scalax.collection.edge.WDiHyperEdge
 import scala.io.Source
 
 @Slow
-class TypeGraphSearchFilesSpec extends AnyWordSpec with Matchers with SearchTestCases {
+class TypeGraphSearchFilesSpec extends AnyWordSpec with Matchers with SearchTestCases with TimeLimitedTests {
+  val timeLimit: Span = Span(1, Minute)
+
   val strategies: List[SearchChallenge] = List(
     new JSearchChallengeRunner(new RensinkSearchStrategyJava()),
+
+    // Disabled because it fails the tests.
+    // new CachingCats,
+
+    // Enable your own strategy in Java
     // new JSearchChallengeRunner(new EfficientSearchStrategyJava),
+
+    // Enable your own strategy in Scala
     // new EfficientSearchStrategyScala,
+
     // Note that this fails, because it's really naive :)
     // new NaiveTailRec
   )

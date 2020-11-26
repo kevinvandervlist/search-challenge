@@ -5,6 +5,7 @@ import java.nio.file.Files
 
 import com.ing.sea.pdeng.graph.{CallableUnit, Type, Vertex}
 import com.ing.sea.pdeng.graph.dot.ImageWriter
+import com.ing.sea.pdeng.graph.search.cachingcats.CachingCats
 import com.ing.sea.pdeng.graph.search.javacompat.JSearchChallengeRunner
 import com.ing.sea.pdeng.graph.search.rensink.RensinkSearchStrategyJava
 import com.ing.sea.pdeng.graph.search.testcases.SearchTestCases
@@ -14,9 +15,14 @@ import scalax.collection.edge.WDiHyperEdge
 
 class TypeGraphSearchSpec extends AnyWordSpec with Matchers with SearchTestCases {
   val strategies: List[SearchChallenge] = List(
+    // Enable your own strategy in Java
     // new JSearchChallengeRunner(new EfficientSearchStrategyJava),
+
+    // Enable your own strategy in Scala
     // new EfficientSearchStrategyScala,
+
     new JSearchChallengeRunner(new RensinkSearchStrategyJava()),
+    new CachingCats,
     new NaiveTailRec,
   )
   type Search = TypeGraphSearch[Vertex, Type, CallableUnit, WDiHyperEdge, DepthContext[Vertex, Type, CallableUnit, WDiHyperEdge]]
